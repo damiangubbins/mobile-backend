@@ -24,7 +24,7 @@ struct ValidateRequest {
 #[post("/", format = "json", data = "<item>")]
 async fn create_item(item: Json<Item<'static>>, items: Items<'_>) -> Value {
     let mut items = items.lock().await;
-    let id = format!("b{:06}", items.len() + 1);
+    let id = format!("B{:06}", items.len() + 1);
     let item = Item {
         id: Some(id.clone()),
         name: item.name.clone(),
