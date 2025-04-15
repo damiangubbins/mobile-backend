@@ -2,8 +2,7 @@ use rocket::State;
 use rocket::serde::json::{Json, Value, json};
 use rocket::serde::{Deserialize, Serialize};
 use rocket::tokio::sync::Mutex;
-use rocket::tokio::time::sleep;
-use std::time::Duration;
+use rocket::tokio::time::{Duration, sleep};
 
 type Id = String;
 type ItemList = Mutex<Vec<Item>>;
