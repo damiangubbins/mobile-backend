@@ -9,7 +9,6 @@ type ItemList = Mutex<Vec<Item<'static>>>;
 type Items<'r> = &'r State<ItemList>;
 
 #[derive(Serialize, Deserialize, Clone)]
-#[serde(crate = "rocket::serde")]
 struct Item<'r> {
     id: Option<String>,
     name: Cow<'r, str>,
@@ -18,7 +17,6 @@ struct Item<'r> {
 }
 
 #[derive(Deserialize)]
-#[serde(crate = "rocket::serde")]
 struct ValidateRequest {
     _items: Vec<String>,
 }
