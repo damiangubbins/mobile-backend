@@ -16,6 +16,7 @@ struct Order {
 struct OrderItem {
     name: String,
     quantity: u32,
+    unit: String,
 }
 
 #[post("/", format = "json", data = "<order>")]
@@ -59,8 +60,8 @@ fn not_found() -> Value {
 pub fn stage() -> rocket::fairing::AdHoc {
     rocket::fairing::AdHoc::on_ignite("Orders Stage", |rocket| async {
         rocket
-        .mount("/orders", routes![create_order, get_orders, get_order])
-        .register("/", catchers![not_found])
-        .manage(OrderList::default())
+            .mount("/orders", routes![create_order, get_orders, get_order])
+            .register("/", catchers![not_found])
+            .manage(OrderList::default())
     })
 }
