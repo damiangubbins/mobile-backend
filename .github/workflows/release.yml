@@ -67,7 +67,7 @@ jobs:
           path: ./windows
 
       - name: Create GitHub Release
-      - run: |
+        run: |
           gh release create ${{ github.ref_name }} \
             ./linux/mobile-backend=mobile-backend-linux \
             ./windows/mobile-backend.exe=mobile-backend-windows \
