@@ -1,26 +1,20 @@
 use rocket::State;
 use rocket::serde::{Deserialize, Serialize};
 use rocket::tokio::sync::Mutex;
-use std::borrow::Cow;
 
-pub type ItemList = Mutex<Vec<Item<'static>>>;
-pub type Items<'r> = &'r State<ItemList>;
+pub type ItemList = Mutex<Vec<Item>>;
+pub type Items = State<ItemList>;
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Item<'r> {
+pub struct Item {
     pub id: Option<String>,
-    pub name: Cow<'r, str>,
+    pub name: String,
     pub quantity: u32,
-    pub unit: Cow<'r, str>,
+    pub unit: String,
 }
 
-impl Item<'_> {
-    pub fn new<'r>(
-        id: Option<String>,
-        name: Cow<'r, str>,
-        quantity: u32,
-        unit: Cow<'r, str>,
-    ) -> Item<'r> {
+impl Item {
+    pub fn new<'r>(id: Option<String>, name: String, quantity: u32, unit: String) -> Item {
         Item {
             id,
             name,
@@ -30,17 +24,17 @@ impl Item<'_> {
     }
 }
 
-pub type OrderList = Mutex<Vec<Order<'static>>>;
-pub type Orders<'r> = &'r State<OrderList>;
+pub type OrderList = Mutex<Vec<Order>>;
+pub type Orders = State<OrderList>;
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Order<'r> {
+pub struct Order {
     pub id: Option<String>,
-    pub items: Vec<Item<'r>>,
+    pub items: Vec<Item>,
 }
 
-impl Order<'_> {
-    pub fn new<'r>(id: Option<String>, items: Vec<Item<'r>>) -> Order<'r> {
+impl Order {
+    pub fn new<'r>(id: Option<String>, items: Vec<Item>) -> Order {
         Order { id, items }
     }
 }

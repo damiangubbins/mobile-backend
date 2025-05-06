@@ -2,7 +2,7 @@ use crate::db::{Item, ItemList, Items};
 use rocket::serde::json::{Json, Value, json};
 
 #[post("/", format = "json", data = "<item>")]
-async fn create_item(item: Json<Item<'static>>, items: Items<'_>) -> Value {
+async fn create_item(item: Json<Item>, items: &Items) -> Value {
     let mut items = items.lock().await;
     let id = format!("B{:06}", items.len() + 1);
     let item = Item::new(
@@ -17,13 +17,13 @@ async fn create_item(item: Json<Item<'static>>, items: Items<'_>) -> Value {
 }
 
 #[get("/")]
-async fn get_items(items: Items<'_>) -> Json<Vec<Item>> {
+async fn get_items(items: &Items) -> Json<Vec<Item>> {
     let items = items.lock().await;
     Json(items.clone())
 }
 
 #[get("/<id>")]
-async fn get_item(id: &str, items: Items<'_>) -> Option<Json<Item<'static>>> {
+async fn get_item(id: &str, items: &Items) -> Option<Json<Item>> {
     let items = items.lock().await;
     for item in items.iter() {
         if item.id.as_ref() == Some(&id.to_string()) {

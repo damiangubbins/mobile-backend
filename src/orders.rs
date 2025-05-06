@@ -15,7 +15,7 @@ struct ScannedItem {
 }
 
 #[post("/", format = "json", data = "<order>")]
-async fn create_order(order: Json<Order<'static>>, orders: Orders<'_>) -> Value {
+async fn create_order(order: Json<Order>, orders: &Orders) -> Value {
     let mut orders = orders.lock().await;
     let id = format!("P{:06}", orders.len() + 1);
     let order = Order::new(Some(id.clone()), order.items.clone());
@@ -25,13 +25,13 @@ async fn create_order(order: Json<Order<'static>>, orders: Orders<'_>) -> Value 
 }
 
 #[get("/")]
-async fn get_orders(orders: Orders<'_>) -> Json<Vec<Order>> {
+async fn get_orders(orders: &Orders) -> Json<Vec<Order>> {
     let orders = orders.lock().await;
     Json(orders.clone())
 }
 
 #[get("/<id>")]
-async fn get_order(id: &str, orders: Orders<'_>) -> Option<Json<Order<'static>>> {
+async fn get_order(id: &str, orders: &Orders) -> Option<Json<Order>> {
     let orders = orders.lock().await;
     for order in orders.iter() {
         if order.id.as_ref() == Some(&id.to_string()) {
