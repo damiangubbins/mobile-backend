@@ -2,7 +2,6 @@ use rocket::State;
 use rocket::serde::json::{Json, Value, json};
 use rocket::serde::{Deserialize, Serialize};
 use rocket::tokio::sync::Mutex;
-use rocket::tokio::time::{Duration, sleep};
 use std::borrow::Cow;
 
 type ItemList = Mutex<Vec<Item<'static>>>;
@@ -14,11 +13,6 @@ struct Item<'r> {
     name: Cow<'r, str>,
     quantity: u32,
     unit: Cow<'r, str>,
-}
-
-#[derive(Deserialize)]
-struct ValidateRequest {
-    _items: Vec<String>,
 }
 
 #[post("/", format = "json", data = "<item>")]
@@ -53,18 +47,6 @@ async fn get_item(id: &str, items: Items<'_>) -> Option<Json<Item<'static>>> {
     None
 }
 
-#[post("/validate", format = "json", data = "<_request>")]
-async fn validate_items(_request: Json<ValidateRequest>, _items: Items<'_>) -> Value {
-    sleep(Duration::from_secs(3)).await;
-    json!({"status": "ok"})
-}
-
-#[post("/send", format = "json", data = "<_request>")]
-async fn send_items(_request: Json<ValidateRequest>, _items: Items<'_>) -> Value {
-    sleep(Duration::from_secs(3)).await;
-    json!({"status": "ok"})
-}
-
 #[catch(404)]
 fn not_found() -> Value {
     json!({
@@ -76,10 +58,7 @@ fn not_found() -> Value {
 pub fn stage() -> rocket::fairing::AdHoc {
     rocket::fairing::AdHoc::on_ignite("Items Stage", |rocket| async {
         rocket
-            .mount(
-                "/items",
-                routes![create_item, get_items, get_item, validate_items, send_items],
-            )
+            .mount("/items", routes![create_item, get_items, get_item])
             .register("/items", catchers![not_found])
             .manage(ItemList::new(vec![]))
     })

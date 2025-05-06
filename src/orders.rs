@@ -2,9 +2,12 @@ use rocket::State;
 use rocket::serde::json::{Json, Value, json};
 use rocket::serde::{Deserialize, Serialize};
 use rocket::tokio::sync::Mutex;
+use rocket::tokio::time::{Duration, sleep};
 
 type OrderList = Mutex<Vec<Order>>;
 type Orders = State<OrderList>;
+
+use crate::items;
 
 #[derive(Serialize, Deserialize, Clone)]
 struct Order {
@@ -17,6 +20,17 @@ struct OrderItem {
     name: String,
     quantity: u32,
     unit: String,
+}
+
+#[derive(Deserialize)]
+struct ValidateRequest {
+    _order_id: String,
+    _scanned_items: Vec<ScannedItem>,
+}
+
+#[derive(Deserialize)]
+struct ScannedItem {
+    _id: String,
 }
 
 #[post("/", format = "json", data = "<order>")]
@@ -49,6 +63,18 @@ async fn get_order(id: &str, orders: &Orders) -> Option<Json<Order>> {
     None
 }
 
+#[post("/validate", format = "json", data = "<_request>")]
+async fn validate_items(_request: Json<ValidateRequest>) -> Value {
+    sleep(Duration::from_secs(3)).await;
+    json!({"status": "ok"})
+}
+
+#[post("/send", format = "json", data = "<_request>")]
+async fn send_items(_request: Json<ValidateRequest>) -> Value {
+    sleep(Duration::from_secs(3)).await;
+    json!({"status": "ok"})
+}
+
 #[catch(404)]
 fn not_found() -> Value {
     json!({
@@ -60,7 +86,16 @@ fn not_found() -> Value {
 pub fn stage() -> rocket::fairing::AdHoc {
     rocket::fairing::AdHoc::on_ignite("Orders Stage", |rocket| async {
         rocket
-            .mount("/orders", routes![create_order, get_orders, get_order])
+            .mount(
+                "/orders",
+                routes![
+                    create_order,
+                    get_orders,
+                    get_order,
+                    validate_items,
+                    send_items
+                ],
+            )
             .register("/", catchers![not_found])
             .manage(OrderList::default())
     })
