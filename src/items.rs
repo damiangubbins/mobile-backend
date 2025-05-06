@@ -1,30 +1,16 @@
-use rocket::State;
+use crate::db::{Item, ItemList, Items};
 use rocket::serde::json::{Json, Value, json};
-use rocket::serde::{Deserialize, Serialize};
-use rocket::tokio::sync::Mutex;
-use std::borrow::Cow;
-
-type ItemList = Mutex<Vec<Item<'static>>>;
-type Items<'r> = &'r State<ItemList>;
-
-#[derive(Serialize, Deserialize, Clone)]
-struct Item<'r> {
-    id: Option<String>,
-    name: Cow<'r, str>,
-    quantity: u32,
-    unit: Cow<'r, str>,
-}
 
 #[post("/", format = "json", data = "<item>")]
 async fn create_item(item: Json<Item<'static>>, items: Items<'_>) -> Value {
     let mut items = items.lock().await;
     let id = format!("B{:06}", items.len() + 1);
-    let item = Item {
-        id: Some(id.clone()),
-        name: item.name.clone(),
-        quantity: item.quantity,
-        unit: item.unit.clone(),
-    };
+    let item = Item::new(
+        Some(id.clone()),
+        item.name.clone(),
+        item.quantity,
+        item.unit.clone(),
+    );
     items.push(item);
 
     json!({"status": "ok", "id": id})
