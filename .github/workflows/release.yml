@@ -86,5 +86,5 @@ jobs:
             - Linux x86_64
             - Windows x86_64
           files: |
-            artifacts/linux-x86_64/my-api-linux
-            artifacts/windows-x86_64/my-api-windows.exe
+            artifacts/linux-x86_64/mobile-backend-linux
+            artifacts/windows-x86_64/mobile-backend-windows.exe
