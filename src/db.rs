@@ -14,7 +14,7 @@ pub struct Item {
 }
 
 impl Item {
-    pub fn new<'r>(id: Option<String>, name: String, quantity: u32, unit: String) -> Item {
+    pub fn new(id: Option<String>, name: String, quantity: u32, unit: String) -> Item {
         Item {
             id,
             name,
@@ -34,7 +34,7 @@ pub struct Order {
 }
 
 impl Order {
-    pub fn new<'r>(id: Option<String>, items: Vec<Item>) -> Order {
+    pub fn new(id: Option<String>, items: Vec<Item>) -> Order {
         Order { id, items }
     }
 }
