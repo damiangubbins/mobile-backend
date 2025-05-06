@@ -26,7 +26,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rust-api-linux
-          path: target/release/mobile-api
+          path: target/release/mobile-backend
 
   build-windows:
     name: Build for Windows (x86_64)
@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rust-api-windows
-          path: target/release/mobile-api.exe
+          path: target/release/mobile-backend.exe
 
   release:
     name: Create GitHub Release
@@ -70,7 +70,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            linux/mobile-api
-            windows/mobile-api.exe
+            linux/mobile-backend
+            windows/mobile-backend.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
