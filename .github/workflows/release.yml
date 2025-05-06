@@ -69,8 +69,8 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create ${{ github.ref_name }} \
-            ./linux/mobile-backend=mobile-backend-linux \
-            ./windows/mobile-backend.exe=mobile-backend-windows \
+            ./linux/mobile-backend \
+            ./windows/mobile-backend.exe \
             --title "Release ${{ github.ref_name }}" \
             --notes "This release includes binaries for both Linux and Windows."
         env:
