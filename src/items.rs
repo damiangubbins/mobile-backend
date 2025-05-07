@@ -1,4 +1,4 @@
-use crate::db::{Item, ItemList, Items};
+use crate::db::{Item, Items};
 use rocket::serde::json::{Json, Value, json};
 
 #[post("/", format = "json", data = "<item>")]
@@ -33,19 +33,8 @@ async fn get_item(id: &str, items: &Items) -> Option<Json<Item>> {
     None
 }
 
-#[catch(404)]
-fn not_found() -> Value {
-    json!({
-        "status": "error",
-        "reason": "Resource was not found."
-    })
-}
-
 pub fn stage() -> rocket::fairing::AdHoc {
     rocket::fairing::AdHoc::on_ignite("Items Stage", |rocket| async {
-        rocket
-            .mount("/items", routes![create_item, get_items, get_item])
-            .register("/items", catchers![not_found])
-            .manage(ItemList::new(vec![]))
+        rocket.mount("/items", routes![create_item, get_items, get_item])
     })
 }
