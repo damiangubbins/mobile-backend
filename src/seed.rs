@@ -71,8 +71,8 @@ pub fn seed_order_list() -> OrderList {
     let initial_orders = vec![Order::new(
         Some("O000001".to_string()),
         vec![
-            Item::new(None, "Huevos".to_string(), 48, "unidades".to_string()),
-            Item::new(None, "Leche en Polvo".to_string(), 20, "kg".to_string()),
+            Item::new(None, "Huevos".to_string(), 24, "unidades".to_string()),
+            Item::new(None, "Leche en Polvo".to_string(), 12, "kg".to_string()),
         ],
     )];
     Mutex::new(initial_orders)
