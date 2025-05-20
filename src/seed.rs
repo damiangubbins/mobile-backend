@@ -68,12 +68,49 @@ pub fn seed_item_list() -> ItemList {
 }
 
 pub fn seed_order_list() -> OrderList {
-    let initial_orders = vec![Order::new(
-        Some("O000001".to_string()),
-        vec![
-            Item::new(None, "Huevos".to_string(), 24, "unidades".to_string()),
-            Item::new(None, "Leche en Polvo".to_string(), 12, "kg".to_string()),
-        ],
-    )];
+    let initial_orders = vec![
+        Order::new(
+            Some("O000001".to_string()),
+            vec![
+                Item::new(None, "Huevos".to_string(), 24, "unidades".to_string()),
+                Item::new(None, "Leche en Polvo".to_string(), 12, "kg".to_string()),
+            ],
+        ),
+        Order::new(
+            Some("O000002".to_string()),
+            vec![
+                Item::new(
+                    None,
+                    "100300 - IPAC M4 - TAPA ENVASE YOGUR LITRO ARTISAN".to_string(),
+                    20,
+                    "unidades".to_string(),
+                ),
+                Item::new(
+                    None,
+                    "100700 - IPAC M4 - ENVASE YOGUR LITRO ARTISAN".to_string(),
+                    20,
+                    "unidades".to_string(),
+                ),
+                Item::new(
+                    None,
+                    "100908 - IPAC CH1 - IGF - ENVASE YOGUR GRIEGO FRUTILLA".to_string(),
+                    100,
+                    "unidades".to_string(),
+                ),
+                Item::new(
+                    None,
+                    "101108 - IPAC CH3 - ENVASE YOGUR DESCREMADO 360 G".to_string(),
+                    100,
+                    "unidades".to_string(),
+                ),
+                Item::new(
+                    None,
+                    "101108 - IPAC CH3 - ENVASE YOGUR GRIEGO  360 G".to_string(),
+                    100,
+                    "unidades".to_string(),
+                ),
+            ],
+        ),
+    ];
     Mutex::new(initial_orders)
 }
