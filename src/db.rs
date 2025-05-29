@@ -39,17 +39,22 @@ impl Order {
     }
 }
 
-pub type PaletList = Mutex<Vec<Palet>>;
-pub type Palets = State<PaletList>;
+pub type PalletList = Mutex<Vec<Pallet>>;
+pub type Pallets = State<PalletList>;
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Palet {
+pub struct Pallet {
     pub id: Option<String>,
+    pub order_id: String,
     pub item_ids: Vec<String>,
 }
 
-impl Palet {
-    pub fn new(id: Option<String>, item_ids: Vec<String>) -> Palet {
-        Palet { id, item_ids }
+impl Pallet {
+    pub fn new(id: Option<String>, order_id: String, item_ids: Vec<String>) -> Pallet {
+        Pallet {
+            id,
+            order_id,
+            item_ids,
+        }
     }
 }

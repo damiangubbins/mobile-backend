@@ -11,7 +11,7 @@ use rocket::response::Response;
 mod db;
 mod items;
 mod orders;
-mod palets;
+mod pallets;
 mod seed;
 
 #[catch(404)]
@@ -50,9 +50,9 @@ fn rocket() -> _ {
         .attach(CORS)
         .attach(items::stage())
         .attach(orders::stage())
-        .attach(palets::stage())
+        .attach(pallets::stage())
         .register("/", catchers![not_found])
         .manage(seed_item_list())
         .manage(seed_order_list())
-        .manage(db::PaletList::default())
+        .manage(db::PalletList::default())
 }
